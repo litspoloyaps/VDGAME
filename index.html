@@ -3,216 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Valentine 💖</title>
+<title>Cute Valentine Game 💘</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-
-body{
-  background: linear-gradient(135deg,#140014,#2b002b,#000);
-  color:white;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+  overflow: hidden;
+  text-align: center;
+  color: white;
 }
 
-.container{
-  width:95%;
-  max-width:420px;
-  background:rgba(255,255,255,0.07);
-  backdrop-filter:blur(10px);
-  padding:20px;
-  border-radius:20px;
-  text-align:center;
-  box-shadow:0 0 25px rgba(255,0,128,0.6);
+/* 🌹 Animated Roses Background */
+.rose {
+  position: absolute;
+  font-size: 25px;
+  animation: floatUp linear infinite;
+  opacity: 0.8;
+}
+@keyframes floatUp {
+  from { transform: translateY(100vh); }
+  to { transform: translateY(-10vh); }
 }
 
-/* Countdown */
-.countdown{
-  font-size:14px;
-  margin-bottom:10px;
-  color:#ff99cc;
+h1 { margin-top: 10px; }
+
+#gameArea {
+  position: relative;
+  width: 100%;
+  height: 65vh;
+  overflow: hidden;
 }
 
-/* SVG characters */
-.characters{
-  margin:10px 0;
-  animation:bounce 2s infinite;
+.heart {
+  position: absolute;
+  font-size: 28px;
+  cursor: pointer;
+  animation: fall linear forwards;
+}
+.boss {
+  font-size: 60px;
+}
+@keyframes fall {
+  from { top: -50px; }
+  to { top: 100vh; }
 }
 
-@keyframes bounce{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-8px);}
+#scoreBoard {
+  font-size: 18px;
+  margin-bottom: 5px;
 }
 
-/* Letter */
-.letter{
-  font-size:14px;
-  min-height:80px;
-  margin:10px 0;
-  color:#ffccff;
+button {
+  padding: 8px 18px;
+  border: none;
+  background: #ff1493;
+  color: white;
+  font-size: 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 5px;
+}
+button:hover { background: #ff69b4; }
+
+#proposal {
+  display: none;
+  position: absolute;
+  top: 30%;
+  width: 100%;
 }
 
-/* Buttons */
-button{
-  margin:8px;
-  padding:8px 18px;
-  border:none;
-  border-radius:25px;
-  cursor:pointer;
-  font-weight:bold;
-  transition:0.3s;
-}
-
-.yes{background:#ff3399;color:white;}
-.no{background:#444;color:white;}
-
-button:hover{transform:scale(1.1);}
-
-/* Game */
-.game{
-  margin-top:10px;
-  display:flex;
-  justify-content:space-between;
-}
-
-.player{
-  width:48%;
-  background:rgba(255,255,255,0.05);
-  padding:10px;
-  border-radius:15px;
-}
-
-.tapBtn{
-  margin-top:5px;
-  background:#ff66cc;
-  width:100%;
-}
-
-.score{
-  margin-top:5px;
-  font-size:13px;
-}
-
-/* Ring */
-.ring{
-  font-size:55px;
-  display:none;
-  animation:pop 1s ease forwards;
-}
-
-@keyframes pop{
-  from{transform:scale(0);}
-  to{transform:scale(1);}
+input {
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
 }
 </style>
 </head>
 <body>
 
-<!-- Background Music -->
-<audio autoplay loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+<h1>💘 Catch the Love 💘</h1>
+
+<div>
+  💌 Enter Name: <input type="text" id="loverName" placeholder="Your Crush Name">
+  <button onclick="startGame()">Start Game</button>
+</div>
+
+<div id="scoreBoard">
+  Player 1: 0 | Player 2: 0 | Time: 30
+</div>
+
+<div id="gameArea"></div>
+
+<div id="proposal">
+  <h2 id="proposalText"></h2>
+  <button onclick="sayYes()">💍 YES 💍</button>
+  <button id="noBtn" onmouseover="moveNo()">NO 😜</button>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5f2b6c6e38.mp3?filename=romantic-110391.mp3" type="audio/mpeg">
 </audio>
 
-<div class="container">
-
-<div class="countdown" id="countdown"></div>
-
-<!-- Animated SVG Boy & Girl -->
-<div class="characters">
-<svg width="120" height="80">
-  <circle cx="35" cy="40" r="20" fill="#ff99cc"/>
-  <circle cx="85" cy="40" r="20" fill="#66ccff"/>
-  <text x="25" y="75" font-size="12" fill="white">Girl</text>
-  <text x="75" y="75" font-size="12" fill="white">Boy</text>
-  <text x="55" y="45" font-size="20">❤️</text>
-</svg>
-</div>
-
-<h2>My Confession 💌</h2>
-<div class="letter" id="letter"></div>
-
-<button onclick="startConfession()">Read My Heart 💖</button>
-<button class="yes" onclick="sayYes()">YES 💞</button>
-<button class="no" id="noBtn">NO 😢</button>
-
-<div class="ring" id="ring">💍</div>
-
-<!-- Multiplayer Love Game -->
-<h3 style="margin-top:10px;">💘 Love Tap Battle</h3>
-<div class="game">
-  <div class="player">
-    Player 1
-    <button class="tapBtn" onclick="tap(1)">Tap 💖</button>
-    <div class="score">Score: <span id="p1">0</span></div>
-  </div>
-  <div class="player">
-    Player 2
-    <button class="tapBtn" onclick="tap(2)">Tap 💘</button>
-    <div class="score">Score: <span id="p2">0</span></div>
-  </div>
-</div>
-
-</div>
-
 <script>
-// Countdown to Valentine's Day
-function updateCountdown(){
-  const now=new Date();
-  const year=now.getFullYear();
-  let valentine=new Date(year,1,14);
-  if(now>valentine) valentine=new Date(year+1,1,14);
-  const diff=valentine-now;
-  const days=Math.floor(diff/(1000*60*60*24));
-  document.getElementById("countdown").innerText=
-  "🌹 "+days+" days until Valentine's Day";
-}
-updateCountdown();
-setInterval(updateCountdown,1000);
+let p1 = 0;
+let p2 = 0;
+let timeLeft = 30;
+let gameInterval, heartInterval, bossTimeout;
+let bossActive = false;
+let turn = 1;
 
-// Typewriter Confession
-const message="From the moment I met you, my world changed. 💕 You make every heartbeat feel magical. I promise to cherish you today and always. 💖";
-function startConfession(){
-  let i=0;
-  const letter=document.getElementById("letter");
-  letter.innerHTML="";
-  function typing(){
-    if(i<message.length){
-      letter.innerHTML+=message.charAt(i);
-      i++;
-      setTimeout(typing,40);
-    }
-  }
-  typing();
+function startGame() {
+  p1 = 0;
+  p2 = 0;
+  timeLeft = 30;
+  bossActive = false;
+  document.getElementById("proposal").style.display = "none";
+  document.getElementById("bgMusic").play();
+
+  updateScore();
+
+  gameInterval = setInterval(() => {
+    timeLeft--;
+    updateScore();
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+
+  heartInterval = setInterval(createHeart, 600);
+
+  bossTimeout = setTimeout(createBoss, 10000);
 }
 
-// NO button runs away
-const noBtn=document.getElementById("noBtn");
-noBtn.addEventListener("mouseover",()=>{
-  noBtn.style.position="absolute";
-  noBtn.style.left=Math.random()*80+"%";
-  noBtn.style.top=Math.random()*80+"%";
-});
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 90 + "vw";
+  heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
 
-// YES
-function sayYes(){
-  document.getElementById("ring").style.display="block";
-  alert("You said YES!! 💖✨ Forever starts now!");
+  heart.onclick = function() {
+    if (turn === 1) { p1++; turn = 2; }
+    else { p2++; turn = 1; }
+    heart.remove();
+    updateScore();
+  };
+
+  document.getElementById("gameArea").appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
 }
 
-// Multiplayer Game
-let score1=0, score2=0;
-function tap(player){
-  if(player===1){
-    score1++;
-    document.getElementById("p1").innerText=score1;
-  }else{
-    score2++;
-    document.getElementById("p2").innerText=score2;
-  }
+function createBoss() {
+  bossActive = true;
+  const boss = document.createElement("div");
+  boss.classList.add("heart", "boss");
+  boss.innerHTML = "💘";
+  boss.style.left = "40vw";
+  boss.style.animationDuration = "5s";
+
+  boss.onclick = function() {
+    if (turn === 1) p1 += 5;
+    else p2 += 5;
+    boss.remove();
+    bossActive = false;
+    updateScore();
+  };
+
+  document.getElementById("gameArea").appendChild(boss);
 }
+
+function updateScore() {
+  document.getElementById("scoreBoard").innerHTML =
+    "Player 1: " + p1 + " | Player 2: " + p2 + " | Time: " + timeLeft;
+}
+
+function endGame() {
+  clearInterval(gameInterval);
+  clearInterval(heartInterval);
+  document.getElementById("bgMusic").pause();
+
+  const name = document.getElementById("loverName").value || "My Love";
+  let winner = p1 > p2 ? "Player 1" : "Player 2";
+
+  document.getElementById("proposalText").innerHTML =
+    winner + " wins! 💖<br><br>" + name + ", will you be my Valentine? 😍";
+
+  document.getElementById("proposal").style.display = "block";
+}
+
+function sayYes() {
+  alert("YAYYY!! 💖🥰 Love accepted! Forever starts now!");
+}
+
+function moveNo() {
+  const btn = document.getElementById("noBtn");
+  btn.style.position = "absolute";
+  btn.style.left = Math.random() * 80 + "vw";
+  btn.style.top = Math.random() * 60 + "vh";
+}
+
+/* 🌹 Generate Floating Roses */
+function createRose() {
+  const rose = document.createElement("div");
+  rose.classList.add("rose");
+  rose.innerHTML = "🌹";
+  rose.style.left = Math.random() * 100 + "vw";
+  rose.style.animationDuration = (Math.random() * 10 + 5) + "s";
+  document.body.appendChild(rose);
+  setTimeout(() => rose.remove(), 15000);
+}
+setInterval(createRose, 800);
 </script>
 
 </body>
