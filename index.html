@@ -3,165 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Romantic Valentine 💖</title>
+<title>Ultimate Valentine 💖</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 
 body{
-  background: linear-gradient(135deg,#1a001f,#330033,#000);
+  background: linear-gradient(135deg,#140014,#2b002b,#000);
+  color:white;
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
   overflow:hidden;
-  color:white;
 }
 
-/* Floating Hearts */
-.heart{
-  position:absolute;
-  bottom:-20px;
-  color:#ff4d88;
-  animation: float 6s linear infinite;
-}
-
-@keyframes float{
-  0%{transform:translateY(0);opacity:1;}
-  100%{transform:translateY(-110vh);opacity:0;}
-}
-
-/* Card */
-.card{
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
+.container{
   width:95%;
-  max-width:400px;
-  padding:25px;
+  max-width:420px;
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(10px);
+  padding:20px;
   border-radius:20px;
   text-align:center;
-  box-shadow:0 0 25px rgba(255,0,120,0.6);
-  position:relative;
+  box-shadow:0 0 25px rgba(255,0,128,0.6);
 }
 
-h1{
-  color:#ff66b2;
+/* Countdown */
+.countdown{
+  font-size:14px;
   margin-bottom:10px;
+  color:#ff99cc;
 }
 
+/* SVG characters */
+.characters{
+  margin:10px 0;
+  animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+
+/* Letter */
+.letter{
+  font-size:14px;
+  min-height:80px;
+  margin:10px 0;
+  color:#ffccff;
+}
+
+/* Buttons */
 button{
-  margin:10px;
-  padding:10px 20px;
+  margin:8px;
+  padding:8px 18px;
   border:none;
-  border-radius:30px;
+  border-radius:25px;
   cursor:pointer;
-  transition:0.3s;
   font-weight:bold;
+  transition:0.3s;
 }
 
-.yes{
-  background:#ff3385;
-  color:white;
+.yes{background:#ff3399;color:white;}
+.no{background:#444;color:white;}
+
+button:hover{transform:scale(1.1);}
+
+/* Game */
+.game{
+  margin-top:10px;
+  display:flex;
+  justify-content:space-between;
 }
 
-.no{
-  background:#444;
-  color:white;
-  position:relative;
+.player{
+  width:48%;
+  background:rgba(255,255,255,0.05);
+  padding:10px;
+  border-radius:15px;
 }
 
-button:hover{
-  transform:scale(1.1);
+.tapBtn{
+  margin-top:5px;
+  background:#ff66cc;
+  width:100%;
 }
 
-/* Proposal Ring */
+.score{
+  margin-top:5px;
+  font-size:13px;
+}
+
+/* Ring */
 .ring{
-  font-size:60px;
-  margin-top:15px;
+  font-size:55px;
   display:none;
   animation:pop 1s ease forwards;
 }
 
 @keyframes pop{
-  0%{transform:scale(0);}
-  100%{transform:scale(1);}
-}
-
-/* Fireworks */
-.firework{
-  position:absolute;
-  width:5px;
-  height:5px;
-  background:yellow;
-  border-radius:50%;
-  animation: explode 1s ease-out forwards;
-}
-
-@keyframes explode{
-  to{
-    transform:translate(var(--x),var(--y));
-    opacity:0;
-  }
-}
-
-/* Mini Game */
-.game{
-  margin-top:15px;
-  height:150px;
-  border:2px solid pink;
-  position:relative;
-  overflow:hidden;
-}
-
-.heartCatch{
-  position:absolute;
-  font-size:25px;
-  cursor:pointer;
-}
-
-.score{
-  margin-top:5px;
-  font-size:14px;
-}
-
-/* Responsive */
-@media(max-width:480px){
-  h1{font-size:20px;}
+  from{transform:scale(0);}
+  to{transform:scale(1);}
 }
 </style>
 </head>
 <body>
 
-<div class="card">
-  <h1>Will You Be My Valentine? 💖</h1>
-  <p>You make my world magical ✨</p>
+<!-- Background Music -->
+<audio autoplay loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
 
-  <button class="yes" onclick="sayYes()">YES 💞</button>
-  <button class="no" id="noBtn">NO 😢</button>
+<div class="container">
 
-  <div class="ring" id="ring">💍</div>
+<div class="countdown" id="countdown"></div>
 
-  <div class="game">
-    <div id="heart" class="heartCatch">💖</div>
+<!-- Animated SVG Boy & Girl -->
+<div class="characters">
+<svg width="120" height="80">
+  <circle cx="35" cy="40" r="20" fill="#ff99cc"/>
+  <circle cx="85" cy="40" r="20" fill="#66ccff"/>
+  <text x="25" y="75" font-size="12" fill="white">Girl</text>
+  <text x="75" y="75" font-size="12" fill="white">Boy</text>
+  <text x="55" y="45" font-size="20">❤️</text>
+</svg>
+</div>
+
+<h2>My Confession 💌</h2>
+<div class="letter" id="letter"></div>
+
+<button onclick="startConfession()">Read My Heart 💖</button>
+<button class="yes" onclick="sayYes()">YES 💞</button>
+<button class="no" id="noBtn">NO 😢</button>
+
+<div class="ring" id="ring">💍</div>
+
+<!-- Multiplayer Love Game -->
+<h3 style="margin-top:10px;">💘 Love Tap Battle</h3>
+<div class="game">
+  <div class="player">
+    Player 1
+    <button class="tapBtn" onclick="tap(1)">Tap 💖</button>
+    <div class="score">Score: <span id="p1">0</span></div>
   </div>
-  <div class="score">Love Points: <span id="score">0</span></div>
+  <div class="player">
+    Player 2
+    <button class="tapBtn" onclick="tap(2)">Tap 💘</button>
+    <div class="score">Score: <span id="p2">0</span></div>
+  </div>
+</div>
+
 </div>
 
 <script>
-// Floating hearts background
-for(let i=0;i<25;i++){
-  let heart=document.createElement("div");
-  heart.className="heart";
-  heart.innerHTML="❤";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.fontSize=(Math.random()*20+10)+"px";
-  heart.style.animationDuration=(Math.random()*3+3)+"s";
-  document.body.appendChild(heart);
+// Countdown to Valentine's Day
+function updateCountdown(){
+  const now=new Date();
+  const year=now.getFullYear();
+  let valentine=new Date(year,1,14);
+  if(now>valentine) valentine=new Date(year+1,1,14);
+  const diff=valentine-now;
+  const days=Math.floor(diff/(1000*60*60*24));
+  document.getElementById("countdown").innerText=
+  "🌹 "+days+" days until Valentine's Day";
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+// Typewriter Confession
+const message="From the moment I met you, my world changed. 💕 You make every heartbeat feel magical. I promise to cherish you today and always. 💖";
+function startConfession(){
+  let i=0;
+  const letter=document.getElementById("letter");
+  letter.innerHTML="";
+  function typing(){
+    if(i<message.length){
+      letter.innerHTML+=message.charAt(i);
+      i++;
+      setTimeout(typing,40);
+    }
+  }
+  typing();
 }
 
 // NO button runs away
@@ -172,40 +196,23 @@ noBtn.addEventListener("mouseover",()=>{
   noBtn.style.top=Math.random()*80+"%";
 });
 
-// YES function
+// YES
 function sayYes(){
   document.getElementById("ring").style.display="block";
-  launchFireworks();
-  alert("YAY!! You said YES! 💖✨");
+  alert("You said YES!! 💖✨ Forever starts now!");
 }
 
-// Fireworks
-function launchFireworks(){
-  for(let i=0;i<30;i++){
-    let fw=document.createElement("div");
-    fw.className="firework";
-    fw.style.left="50%";
-    fw.style.top="50%";
-    fw.style.setProperty("--x",(Math.random()*400-200)+"px");
-    fw.style.setProperty("--y",(Math.random()*400-200)+"px");
-    document.body.appendChild(fw);
-    setTimeout(()=>fw.remove(),1000);
+// Multiplayer Game
+let score1=0, score2=0;
+function tap(player){
+  if(player===1){
+    score1++;
+    document.getElementById("p1").innerText=score1;
+  }else{
+    score2++;
+    document.getElementById("p2").innerText=score2;
   }
 }
-
-// Mini Love Catch Game
-let heart=document.getElementById("heart");
-let score=0;
-heart.addEventListener("click",()=>{
-  score++;
-  document.getElementById("score").innerText=score;
-  heart.style.left=Math.random()*80+"%";
-  heart.style.top=Math.random()*80+"%";
-});
-
-// Initial heart position
-heart.style.left="40%";
-heart.style.top="40%";
 </script>
 
 </body>
