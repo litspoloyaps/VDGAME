@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Romantic Valentine 💖</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background: linear-gradient(135deg,#1a001f,#330033,#000);
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  color:white;
+}
+
+/* Floating Hearts */
+.heart{
+  position:absolute;
+  bottom:-20px;
+  color:#ff4d88;
+  animation: float 6s linear infinite;
+}
+
+@keyframes float{
+  0%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-110vh);opacity:0;}
+}
+
+/* Card */
+.card{
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  width:95%;
+  max-width:400px;
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 0 25px rgba(255,0,120,0.6);
+  position:relative;
+}
+
+h1{
+  color:#ff66b2;
+  margin-bottom:10px;
+}
+
+button{
+  margin:10px;
+  padding:10px 20px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  transition:0.3s;
+  font-weight:bold;
+}
+
+.yes{
+  background:#ff3385;
+  color:white;
+}
+
+.no{
+  background:#444;
+  color:white;
+  position:relative;
+}
+
+button:hover{
+  transform:scale(1.1);
+}
+
+/* Proposal Ring */
+.ring{
+  font-size:60px;
+  margin-top:15px;
+  display:none;
+  animation:pop 1s ease forwards;
+}
+
+@keyframes pop{
+  0%{transform:scale(0);}
+  100%{transform:scale(1);}
+}
+
+/* Fireworks */
+.firework{
+  position:absolute;
+  width:5px;
+  height:5px;
+  background:yellow;
+  border-radius:50%;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode{
+  to{
+    transform:translate(var(--x),var(--y));
+    opacity:0;
+  }
+}
+
+/* Mini Game */
+.game{
+  margin-top:15px;
+  height:150px;
+  border:2px solid pink;
+  position:relative;
+  overflow:hidden;
+}
+
+.heartCatch{
+  position:absolute;
+  font-size:25px;
+  cursor:pointer;
+}
+
+.score{
+  margin-top:5px;
+  font-size:14px;
+}
+
+/* Responsive */
+@media(max-width:480px){
+  h1{font-size:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Will You Be My Valentine? 💖</h1>
+  <p>You make my world magical ✨</p>
+
+  <button class="yes" onclick="sayYes()">YES 💞</button>
+  <button class="no" id="noBtn">NO 😢</button>
+
+  <div class="ring" id="ring">💍</div>
+
+  <div class="game">
+    <div id="heart" class="heartCatch">💖</div>
+  </div>
+  <div class="score">Love Points: <span id="score">0</span></div>
+</div>
+
+<script>
+// Floating hearts background
+for(let i=0;i<25;i++){
+  let heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="❤";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=(Math.random()*20+10)+"px";
+  heart.style.animationDuration=(Math.random()*3+3)+"s";
+  document.body.appendChild(heart);
+}
+
+// NO button runs away
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+  noBtn.style.position="absolute";
+  noBtn.style.left=Math.random()*80+"%";
+  noBtn.style.top=Math.random()*80+"%";
+});
+
+// YES function
+function sayYes(){
+  document.getElementById("ring").style.display="block";
+  launchFireworks();
+  alert("YAY!! You said YES! 💖✨");
+}
+
+// Fireworks
+function launchFireworks(){
+  for(let i=0;i<30;i++){
+    let fw=document.createElement("div");
+    fw.className="firework";
+    fw.style.left="50%";
+    fw.style.top="50%";
+    fw.style.setProperty("--x",(Math.random()*400-200)+"px");
+    fw.style.setProperty("--y",(Math.random()*400-200)+"px");
+    document.body.appendChild(fw);
+    setTimeout(()=>fw.remove(),1000);
+  }
+}
+
+// Mini Love Catch Game
+let heart=document.getElementById("heart");
+let score=0;
+heart.addEventListener("click",()=>{
+  score++;
+  document.getElementById("score").innerText=score;
+  heart.style.left=Math.random()*80+"%";
+  heart.style.top=Math.random()*80+"%";
+});
+
+// Initial heart position
+heart.style.left="40%";
+heart.style.top="40%";
+</script>
+
+</body>
+</html>
